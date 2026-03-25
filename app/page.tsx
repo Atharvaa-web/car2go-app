@@ -489,7 +489,7 @@ alert(error.message);    alert("Booking failed");
     </div> */}
 
 
-// ABOUT US
+
        {page === "about" && (
   <div className="p-10 bg-gray-100">
    {/* 🔥 UPPER STICKY NAVBAR (same height as lower bar) */}
