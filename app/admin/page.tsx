@@ -135,18 +135,15 @@ async function getBookings() {
             </h1>
 
             <div className="grid md:grid-cols-3 gap-6">
-              <div className="bg-black p-6 rounded-xl shadow text-center border-t-4 border-orange-500">
-                <h2 className="text-xl font-bold">Total Cars</h2>
+<div className="bg-white text-black p-6 rounded-xl shadow text-center border-t-4 border-orange-500">                <h2 className="text-xl font-bold">Total Cars</h2>
                 <p className="text-3xl mt-2">{cars.length}</p>
               </div>
 
-              <div className="bg-black p-6 rounded-xl shadow text-center border-t-4 border-orange-500">
-                <h2 className="text-xl font-bold">Total Bookings</h2>
+<div className="bg-white text-black p-6 rounded-xl shadow text-center border-t-4 border-orange-500">                <h2 className="text-xl font-bold">Total Bookings</h2>
                 <p className="text-3xl mt-2">{bookings.length}</p>
               </div>
 
-              <div className="bg-black p-6 rounded-xl shadow text-center border-t-4 border-orange-500">
-                <h2 className="text-xl font-bold">Revenue</h2>
+<div className="bg-white text-black p-6 rounded-xl shadow text-center border-t-4 border-orange-500">                <h2 className="text-xl font-bold">Revenue</h2>
                 <p className="text-3xl mt-2">
                   ₹{bookings.reduce((sum, b) => sum + (b.total_amount || 0), 0)}
                 </p>
