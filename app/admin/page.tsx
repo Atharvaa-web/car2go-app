@@ -163,41 +163,41 @@ async function getBookings() {
             <div className="bg-black p-6 rounded-xl shadow max-w-md mb-10">
               <h2 className="text-xl font-bold mb-4">Add New Car</h2>
 
-              <input
-                placeholder="Car Name"
-                value={newCar.car_name}
-                onChange={(e) =>
-                  setNewCar({ ...newCar, car_name: e.target.value })
-                }
-                className="border w-full p-2 mb-3"
-              />
+             <input
+  placeholder="Car Name"
+  value={newCar.car_name}
+  onChange={(e) =>
+    setNewCar({ ...newCar, car_name: e.target.value })
+  }
+  className="border w-full p-2 mb-3 bg-white text-black placeholder-gray-500"
+/>
 
-              <input
-                placeholder="Price per day"
-                value={newCar.price_per_day}
-                onChange={(e) =>
-                  setNewCar({ ...newCar, price_per_day: e.target.value })
-                }
-                className="border w-full p-2 mb-3"
-              />
+<input
+  placeholder="Price per day"
+  value={newCar.price_per_day}
+  onChange={(e) =>
+    setNewCar({ ...newCar, price_per_day: e.target.value })
+  }
+  className="border w-full p-2 mb-3 bg-white text-black placeholder-gray-500"
+/>
 
-              <input
-                placeholder="Seats"
-                value={newCar.seats}
-                onChange={(e) =>
-                  setNewCar({ ...newCar, seats: e.target.value })
-                }
-                className="border w-full p-2 mb-3"
-              />
+<input
+  placeholder="Seats"
+  value={newCar.seats}
+  onChange={(e) =>
+    setNewCar({ ...newCar, seats: e.target.value })
+  }
+  className="border w-full p-2 mb-3 bg-white text-black placeholder-gray-500"
+/>
 
-              <input
-                placeholder="Image URL"
-                value={newCar.image_url}
-                onChange={(e) =>
-                  setNewCar({ ...newCar, image_url: e.target.value })
-                }
-                className="border w-full p-2 mb-3"
-              />
+<input
+  placeholder="Image URL"
+  value={newCar.image_url}
+  onChange={(e) =>
+    setNewCar({ ...newCar, image_url: e.target.value })
+  }
+  className="border w-full p-2 mb-3 bg-white text-black placeholder-gray-500"
+/>
 
               <button
                 onClick={addCar}
@@ -208,12 +208,12 @@ async function getBookings() {
             </div>
 
             <div className="grid md:grid-cols-3 gap-6">
-              {cars.map((car) => (
-                <div key={car.id} className="bg-white p-4 rounded-xl shadow">
-                  <img
-                    src={car.image_url || "https://via.placeholder.com/300"}
-                    className="w-full h-40 object-cover rounded mb-3"
-                  />
+  {cars.map((car) => (
+    <div key={car.id} className="bg-white text-black p-4 rounded-xl shadow">
+      <img
+        src={car.image_url || "https://via.placeholder.com/300"}
+        className="w-full h-40 object-cover rounded mb-3"
+      />
 
                   <h3 className="font-bold">{car.car_name}</h3>
                   <p>₹{car.price_per_day}/day</p>
@@ -221,7 +221,7 @@ async function getBookings() {
 
                   <button
                     onClick={() => deleteCar(car.id)}
-                    className="mt-3 w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded"
+                    className="mt-3 w-full bg-red-500 hover:bg-red-600 text-black py-2 rounded"
                   >
                     Delete
                   </button>
