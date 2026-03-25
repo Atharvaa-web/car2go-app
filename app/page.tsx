@@ -23,7 +23,11 @@ const [customerMobile, setCustomerMobile] = useState("");
 const [customerAddress, setCustomerAddress] = useState("");
 const [customerAadhar, setCustomerAadhar] = useState("");
 
+const [searchTrackingId, setSearchTrackingId] = useState("");
+const [bookingData, setBookingData] = useState<any>(null);
 
+const [bookingSuccess, setBookingSuccess] = useState(false);
+const [trackingId, setTrackingId] = useState("");
 // 🚗 Booking Info (if not already present)
 //const [pickupDate, setPickupDate] = useState("");
 const [pickupTime, setPickupTime] = useState("");
@@ -35,6 +39,63 @@ const [returnTime, setReturnTime] = useState("");
     getCars();
   }, []);
 
+const handleTrackOrder = async () => {
+  if (!searchTrackingId) {
+    alert("Enter Tracking ID");
+    return;
+  }
+
+  const { data, error } = await supabase
+    .from("bookings")
+    .select("*")
+    .eq("tracking_id", searchTrackingId)
+    .single();
+
+  if (error || !data) {
+    alert("Booking not found");
+    setBookingData(null);
+    return;
+  }
+
+  setBookingData(data);
+};
+
+  const handleBooking = async () => {
+  // simple validation
+  if (!customerName || !customerMobile) {
+    alert("Please fill required details");
+    return;
+  }
+
+  const generatedId = "TRK" + Math.floor(100000 + Math.random() * 900000);
+
+  // OPTIONAL: save to Supabase
+  const { error } = await supabase.from("bookings").insert([
+    {
+      customer_name: customerName,
+      mobile: customerMobile,
+      address: customerAddress,
+      aadhar: customerAadhar,
+      car_name: selectedCar.name,
+      pickup_date: pickupDate,
+      pickup_time: pickupTime,
+      return_date: returnDate,
+      return_time: returnTime,
+      total_amount: totalAmount,
+      tracking_id: generatedId,
+    },
+  ]);
+
+  if (error) {
+console.log("ERROR:", error);
+alert(error.message);    alert("Booking failed");
+    return;
+  }
+
+  setTrackingId(generatedId);
+  setShowModal(false);
+  setBookingSuccess(true);
+};
   async function getCars() {
     const { data } = await supabase.from("cars").select("*");
 
@@ -87,124 +148,187 @@ const [returnTime, setReturnTime] = useState("");
       <div className="w-64 h-screen sticky top-0 bg-gradient-to-b from-orange-500 to-orange-700 text-white p-6 flex flex-col gap-6">
         <h1 className="text-3xl font-extrabold">Car2Go</h1>
 
-        {["dashboard", "cars", "about"].map((item) => (
+        {["dashboard", "cars", "track", "about"].map((item) => (
           <button
             key={item}
             onClick={() => setPage(item)}
             className="px-5 py-3 rounded-full bg-gray-700 text-white font-semibold hover:bg-gray-600 transition text-left"
           >
             {item === "dashboard"
-              ? "Dashboard"
-              : item === "cars"
-              ? "Available Cars"
-              : "About Us"}
+  ? "Dashboard"
+  : item === "cars"
+  ? "Available Cars"
+  : item === "track"
+  ? "Track Order"
+  : "About Us"}
           </button>
         ))}
       </div>
 
       <div className="flex-1 bg-gray-100 overflow-x-hidden">
+{page === "track" && (
+  <div className="bg-gray-100 min-h-screen">
 
-        {/* DASHBOARD */}
-        {page === "dashboard" && (
-          <>
-           {/* 🔥 UPPER STICKY NAVBAR (same height as lower bar) */}
-    <div className="sticky top-0 z-30 bg-orange-500 text-white px-6 py-3 flex justify-around shadow-md">
-      <span className="font-semibold"><b>DASHBOARD</b></span>
+    {/* ✅ NAVBAR (now truly at top) */}
+    <div className="sticky top-0 z-30 bg-orange-500 text-black px-6 py-3 flex justify-center shadow-md">
+      <span className="font-semibold"><b>TRACK BOOKING</b></span>
     </div>
-            <div className="pt-10 px-6">
-              <div className="bg-white rounded-2xl p-8 max-w-6xl mx-auto shadow-xl">
 
-                <div className="flex gap-3 mb-6">
-                  {["Daily", "Monthly"].map((tab) => (
-                    <button
-                      key={tab}
-                      onClick={() => setActiveTab(tab)}
-                      className={`px-6 py-2 rounded-full font-semibold ${
-                        activeTab === tab
-                          ? "bg-orange-500 text-white"
-                          : "bg-gray-200 text-black"
-                      }`}
-                    >
-                      {tab === "Daily"
-                        ? "Daily Rentals"
-                        : "Monthly Subscription"}
-                    </button>
-                  ))}
-                </div>
+    {/* CONTENT */}
+    <div className="p-10">
+      <div className="max-w-xl mx-auto bg-white p-8 rounded-2xl shadow-xl">
 
-                <div className="grid md:grid-cols-2 gap-6">
+        <h2 className="text-2xl font-bold mb-6 text-center text-black">
+          Enter Your Tracking Number
+        </h2>
 
-                  <div>
-                    <p className="text-sm text-black mb-1">Pickup Location</p>
-                    <select
-                      value={pickupLocation}
-                      onChange={(e) => setPickupLocation(e.target.value)}
-                      className="w-full p-4 border rounded-lg text-black bg-white"
-                    >
-                      <option value="">Select pickup location</option>
-                      <option>Warje</option>
-                      <option>Sinhagad Road</option>
-                      <option>Karve Nagar</option>
-                      <option>Kothrud</option>
-                    </select>
-                  </div>
+        <input
+          type="text"
+          placeholder="e.g. TRK123456"
+          value={searchTrackingId}
+          onChange={(e) => setSearchTrackingId(e.target.value)}
+          className="w-full p-4 border rounded-lg mb-4 text-black"
+        />
 
-                  <div>
-                    <p className="text-sm text-black mb-1">City</p>
-                    <div className="p-4 border rounded-lg bg-gray-100 text-black font-medium">
-                      Pune
-                    </div>
-                  </div>
+        <button
+          onClick={handleTrackOrder}
+          className="w-full bg-orange-500 text-white py-3 rounded-full font-bold"
+        >
+          Track Booking
+        </button>
 
-                  <div>
-                    <p className="text-sm text-black mb-1">Dropping Location</p>
-                    <select className="w-full p-4 border rounded-lg text-black bg-white">
-                      <option>Select Dropping location</option>
-                      <option>Warje</option>
-                      <option>Sinhagad Road</option>
-                      <option>Karve Nagar</option>
-                      <option>Kothrud</option>
-                    </select>
-                  </div>
+        {bookingData && (
+          <div className="mt-6 p-5 bg-gray-100 rounded-xl text-black">
+            <p><b>Name:</b> {bookingData.customer_name}</p>
+            <p><b>Mobile:</b> {bookingData.mobile}</p>
+            <p><b>Car:</b> {bookingData.car_name}</p>
+            <p><b>Pickup:</b> {bookingData.pickup_date} ({bookingData.pickup_time})</p>
+            <p><b>Return:</b> {bookingData.return_date} ({bookingData.return_time})</p>
+            <p><b>Total:</b> ₹{bookingData.total_amount}</p>
+          </div>
+        )}
 
-                  <div>
-                    <p className="text-sm text-black mb-1">Pick-Up Date & Time</p>
-                    <div className="flex border rounded-lg">
-                      <input
-                        type="date"
-                        onChange={(e) => setPickupDate(e.target.value)}
-                        className="p-3 flex-1 text-black"
-                      />
-                      <input type="time" className="p-3 w-32 border-l text-black" />
-                    </div>
-                  </div>
+      </div>
+    </div>
 
-                  <div>
-                    <p className="text-sm text-black mb-1">Return Date & Time</p>
-                    <div className="flex border rounded-lg">
-                      <input
-                        type="date"
-                        onChange={(e) => setReturnDate(e.target.value)}
-                        className="p-3 flex-1 text-black"
-                      />
-                      <input type="time" className="p-3 w-32 border-l text-black" />
-                    </div>
-                  </div>
-                </div>
+  </div>
+)}
+      {/* DASHBOARD */}
+{page === "dashboard" && (
+  <>
+    {/* 🔥 UPPER STICKY NAVBAR */}
+    <div className="sticky top-0 z-30 bg-orange-500 text-white px-6 py-3 flex justify-around shadow-md">
+      <span className="font-semibold"><b></b></span>
+    </div>
 
-                <div className="mt-6 flex justify-end">
-                  <button
-                    onClick={() => {
-                      setFilteredCars(cars);
-                      setPage("cars");
-                    }}
-                    className="bg-orange-500 text-white px-10 py-4 rounded-full font-bold hover:bg-orange-600"
-                  >
-                    Show Cars
-                  </button>
-                </div>
-              </div>
+    {/* 🔥 WELCOME BLOCK */}
+    <div className="px-6 mt-6">
+      <div className="max-w-6xl mx-auto bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-2xl p-8 shadow-xl text-center">
+        <h1 className="text-3xl md:text-4xl font-extrabold mb-2">
+          Welcome to CAR2GO Dashboard!
+        </h1>
+        <p className="text-lg font-medium">
+          Book your perfect ride anytime, anywhere in Pune.
+        </p>
+      </div>
+    </div>
+
+    {/* 🔥 FORM SECTION */}
+    <div className="pt-10 px-6">
+      <div className="bg-white rounded-2xl p-8 max-w-6xl mx-auto shadow-xl">
+
+        <div className="flex gap-3 mb-6">
+          {["Daily", "Monthly"].map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-6 py-2 rounded-full font-semibold ${
+                activeTab === tab
+                  ? "bg-orange-500 text-white"
+                  : "bg-gray-200 text-black"
+              }`}
+            >
+              {tab === "Daily"
+                ? "Daily Rentals"
+                : "Monthly Subscription"}
+            </button>
+          ))}
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+
+          <div>
+            <p className="text-sm text-black mb-1">Pickup Location</p>
+            <select
+              value={pickupLocation}
+              onChange={(e) => setPickupLocation(e.target.value)}
+              className="w-full p-4 border rounded-lg text-black bg-white"
+            >
+              <option value="">Select pickup location</option>
+              <option>Warje</option>
+              <option>Sinhagad Road</option>
+              <option>Karve Nagar</option>
+              <option>Kothrud</option>
+            </select>
+          </div>
+
+          <div>
+            <p className="text-sm text-black mb-1">City</p>
+            <div className="p-4 border rounded-lg bg-gray-100 text-black font-medium">
+              Pune
             </div>
+          </div>
+
+          <div>
+            <p className="text-sm text-black mb-1">Dropping Location</p>
+            <select className="w-full p-4 border rounded-lg text-black bg-white">
+              <option>Select Dropping location</option>
+              <option>Warje</option>
+              <option>Sinhagad Road</option>
+              <option>Karve Nagar</option>
+              <option>Kothrud</option>
+            </select>
+          </div>
+
+          <div>
+            <p className="text-sm text-black mb-1">Pick-Up Date & Time</p>
+            <div className="flex border rounded-lg">
+              <input
+                type="date"
+                onChange={(e) => setPickupDate(e.target.value)}
+                className="p-3 flex-1 text-black"
+              />
+              <input type="time" className="p-3 w-32 border-l text-black" />
+            </div>
+          </div>
+
+          <div>
+            <p className="text-sm text-black mb-1">Return Date & Time</p>
+            <div className="flex border rounded-lg">
+              <input
+                type="date"
+                onChange={(e) => setReturnDate(e.target.value)}
+                className="p-3 flex-1 text-black"
+              />
+              <input type="time" className="p-3 w-32 border-l text-black" />
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-6 flex justify-end">
+          <button
+            onClick={() => {
+              setFilteredCars(cars);
+              setPage("cars");
+            }}
+            className="bg-orange-500 text-white px-10 py-4 rounded-full font-bold hover:bg-orange-600"
+          >
+            Show Cars
+          </button>
+        </div>
+      </div>
+    </div>
+
 
             {/* CAROUSEL */}
              {/* 🔥 UPPER STICKY NAVBAR (same height as lower bar) */}
@@ -275,57 +399,94 @@ const [returnTime, setReturnTime] = useState("");
             </div>
           </>
         )}
+{bookingSuccess && (
+  <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center">
+    <div className="bg-white p-10 rounded-2xl text-center shadow-2xl max-w-md">
+      
+      <h2 className="text-3xl font-bold text-green-600 mb-4">
+        Booking Confirmed 🎉
+      </h2>
 
+      <p className="text-lg mb-2">
+        Your car has been successfully booked.
+      </p>
+
+      <p className="text-xl font-bold text-orange-500 mb-4">
+        Tracking ID: {trackingId}
+      </p>
+
+      <button
+        onClick={() => {
+          setBookingSuccess(false);
+          setPage("dashboard");
+        }}
+        className="bg-orange-500 text-white px-6 py-2 rounded-full"
+      >
+        Go to Dashboard
+      </button>
+    </div>
+  </div>
+)}
         {/* AVAILABLE CARS */}
-        {page === "cars" && (
-          <div className="p-10 grid md:grid-cols-3 gap-6 bg-gray-100">
-            {(filteredCars.length ? filteredCars : cars).map((car) => (
-              <div
-                key={car.id}
-className="rounded-2xl shadow-xl bg-gradient-to-b from-gray-900 to-white text-white p-5"              >
-                <div className="flex justify-center mb-3">
-                  <span className="bg-gray-700 px-4 py-1 rounded-full text-sm font-bold">
-                    {car.name}
-                  </span>
-                </div>
+{page === "cars" && (
+  <div className="p-10 grid md:grid-cols-3 gap-6 bg-gray-100">
+    {(filteredCars.length ? filteredCars : cars).map((car) => (
+      <div
+        key={car.id}
+        className="rounded-2xl shadow-xl bg-gradient-to-b from-gray-900 to-white text-white p-5 
+        transition-all duration-300 hover:scale-105 hover:shadow-2xl 
+        hover:bg-gradient-to-b hover:from-orange-500 hover:to-white hover:text-black cursor-pointer"
+      >
+        <div className="flex justify-center mb-3">
+          <span className="bg-gray-700 text-white px-4 py-1 rounded-full text-sm font-bold 
+          transition hover:bg-orange-500">
+            {car.name}
+          </span>
+        </div>
 
-                <div className="flex justify-center my-4">
-                  <img src={car.image_url} className="h-28 object-contain" />
-                </div>
+        <div className="flex justify-center my-4">
+          <img
+            src={car.image_url}
+            className="h-28 object-contain transition-transform duration-300 hover:scale-110"
+          />
+        </div>
 
-                <div className="text-center">
-                  <p className="text-gray-300 text-sm mb-1">
-                    {car.type || "Premium Vehicle"}
-                  </p>
+        <div className="text-center">
+          <p className="text-gray-300 text-sm mb-1 hover:text-black transition">
+            {car.type || "Premium Vehicle"}
+          </p>
 
-                  {/* ✅ DESCRIPTION ADDED */}
-                  <p className="text-xs text-gray-400 mb-2">
-                    {car.description}
-                  </p>
+          {/* DESCRIPTION */}
+          <p className="text-xs text-gray-400 mb-2 hover:text-gray-700 transition">
+            {car.description}
+          </p>
 
-                  <div className="text-2xl font-bold">
-                    ₹{car.price} /day
-                  </div>
-
-                  <button
-                    onClick={() => {
-                      setSelectedCar(car);
-                      setShowModal(true);
-                    }}
-                    className="mt-4 w-full bg-orange-500 py-2 rounded-full"
-                  >
-                    Book Now
-                  </button>
-                </div>
-                
-              </div>
-            ))}
-            
+          <div className="text-2xl font-bold">
+            ₹{car.price} /day
           </div>
-          
-          
-        )} {/* 🔥 SEPARATION BLOCK */}
+
+          <button
+            onClick={() => {
+              setSelectedCar(car);
+              setShowModal(true);
+            }}
+            className="mt-4 w-full bg-orange-500 py-2 rounded-full font-semibold 
+            hover:bg-orange-600 transition"
+          >
+            Book Now
+          </button>
+        </div>
+      </div>
+    ))}
+  </div>
+)}
+
 <div className="w-full h-6 bg-white"></div>
+        {/* 🔥 SEPARATION BLOCK */}
+ {/* 🔥 UPPER STICKY NAVBAR (same height as lower bar)
+    <div className="sticky top-0 z-30 bg-orange-500 text-white px-6 py-3 flex justify-around shadow-md">
+      <span className="font-semibold"><b>TRACK BOOKING</b></span>
+    </div> */}
 
 
 // ABOUT US
@@ -572,8 +733,10 @@ className="rounded-2xl shadow-xl bg-gradient-to-b from-gray-900 to-white text-wh
       </div>
 
       {/* BUTTON */}
-      <button className="w-full bg-orange-500 py-3 mt-3 rounded-full font-bold hover:bg-orange-600 transition">
-        Confirm Booking
+<button
+  onClick={handleBooking}
+  className="w-full bg-orange-500 py-3 mt-3 rounded-full font-bold hover:bg-orange-600 transition"
+>        Confirm Booking
       </button>
 
       {/* CLOSE */}
