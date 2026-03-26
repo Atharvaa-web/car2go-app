@@ -138,17 +138,17 @@ export default function Admin() {
             </h1>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
-              <div className="bg-white p-3 md:p-6 rounded-xl shadow text-center">
+              <div className="bg-black p-3 md:p-6 rounded-xl shadow text-center">
                 <h2 className="text-sm md:text-xl font-bold">Total Cars</h2>
                 <p className="text-xl md:text-3xl mt-1">{cars.length}</p>
               </div>
 
-              <div className="bg-white p-3 md:p-6 rounded-xl shadow text-center">
+              <div className="bg-black p-3 md:p-6 rounded-xl shadow text-center">
                 <h2 className="text-sm md:text-xl font-bold">Total Bookings</h2>
                 <p className="text-xl md:text-3xl mt-1">{bookings.length}</p>
               </div>
 
-              <div className="bg-white p-3 md:p-6 rounded-xl shadow text-center">
+              <div className="bg-black p-3 md:p-6 rounded-xl shadow text-center">
                 <h2 className="text-sm md:text-xl font-bold">Revenue</h2>
                 <p className="text-xl md:text-3xl mt-1">
                   ₹{bookings.reduce((sum, b) => sum + (b.total_amount || 0), 0)}

@@ -142,41 +142,40 @@ alert(error.message);    alert("Booking failed");
   const totalAmount = selectedCar ? selectedCar.price * getDays() : 0;
 
   return (
-    <div className="flex">
+  <div className="flex">
 
-      {/* SIDEBAR */}
-      <div className="w-64 h-screen sticky top-0 bg-gradient-to-b from-orange-500 to-orange-700 text-white p-6 flex flex-col gap-6">
-        <h1 className="text-3xl font-extrabold">Car2Go</h1>
+    {/* SIDEBAR */}
+    <div className="hidden md:flex w-64 h-screen sticky top-0 bg-gradient-to-b from-orange-500 to-orange-700 text-white p-6 flex-col gap-6">
+      <h1 className="text-3xl font-extrabold">Car2Go</h1>
 
-        {["dashboard", "cars", "track", "about"].map((item) => (
-          <button
-            key={item}
-            onClick={() => setPage(item)}
-            className="px-5 py-3 rounded-full bg-gray-700 text-white font-semibold hover:bg-gray-600 transition text-left"
-          >
-            {item === "dashboard"
-  ? "Dashboard"
-  : item === "cars"
-  ? "Available Cars"
-  : item === "track"
-  ? "Track Order"
-  : "About Us"}
-          </button>
-        ))}
-      </div>
+      {["dashboard", "cars", "track", "about"].map((item) => (
+        <button
+          key={item}
+          onClick={() => setPage(item)}
+          className="px-5 py-3 rounded-full bg-gray-700 text-white font-semibold hover:bg-gray-600 transition text-left"
+        >
+          {item === "dashboard"
+            ? "Dashboard"
+            : item === "cars"
+            ? "Available Cars"
+            : item === "track"
+            ? "Track Order"
+            : "About Us"}
+        </button>
+      ))}
+    </div>
 
-      <div className="flex-1 bg-gray-100 overflow-x-hidden">
+    <div className="flex-1 bg-gray-100 overflow-x-hidden">
+
 {page === "track" && (
   <div className="bg-gray-100 min-h-screen">
 
-    {/* ✅ NAVBAR (now truly at top) */}
     <div className="sticky top-0 z-30 bg-orange-500 text-black px-6 py-3 flex justify-center shadow-md">
       <span className="font-semibold"><b>TRACK BOOKING</b></span>
     </div>
 
-    {/* CONTENT */}
-    <div className="p-10">
-      <div className="max-w-xl mx-auto bg-white p-8 rounded-2xl shadow-xl">
+    <div className="p-4 md:p-10">
+      <div className="max-w-xl mx-auto bg-white p-6 md:p-8 rounded-2xl shadow-xl">
 
         <h2 className="text-2xl font-bold mb-6 text-center text-black">
           Enter Your Tracking Number
@@ -213,31 +212,29 @@ alert(error.message);    alert("Booking failed");
 
   </div>
 )}
-      {/* DASHBOARD */}
+
+{/* DASHBOARD */}
 {page === "dashboard" && (
   <>
-    {/* 🔥 UPPER STICKY NAVBAR */}
     <div className="sticky top-0 z-30 bg-orange-500 text-white px-6 py-3 flex justify-around shadow-md">
       <span className="font-semibold"><b></b></span>
     </div>
 
-    {/* 🔥 WELCOME BLOCK */}
-    <div className="px-6 mt-6">
-      <div className="max-w-6xl mx-auto bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-2xl p-8 shadow-xl text-center">
-        <h1 className="text-3xl md:text-4xl font-extrabold mb-2">
+    <div className="px-4 md:px-6 mt-6">
+      <div className="max-w-6xl mx-auto bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-2xl p-6 md:p-8 shadow-xl text-center">
+        <h1 className="text-2xl md:text-4xl font-extrabold mb-2">
           Welcome to CAR2GO Dashboard!
         </h1>
-        <p className="text-lg font-medium">
+        <p className="text-sm md:text-lg font-medium">
           Book your perfect ride anytime, anywhere in Pune.
         </p>
       </div>
     </div>
 
-    {/* 🔥 FORM SECTION */}
-    <div className="pt-10 px-6">
-      <div className="bg-white rounded-2xl p-8 max-w-6xl mx-auto shadow-xl">
+    <div className="pt-6 md:pt-10 px-4 md:px-6">
+      <div className="bg-white rounded-2xl p-6 md:p-8 max-w-6xl mx-auto shadow-xl">
 
-        <div className="flex gap-3 mb-6">
+        <div className="flex gap-3 mb-6 flex-wrap">
           {["Daily", "Monthly"].map((tab) => (
             <button
               key={tab}
@@ -255,7 +252,7 @@ alert(error.message);    alert("Booking failed");
           ))}
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
 
           <div>
             <p className="text-sm text-black mb-1">Pickup Location</p>
@@ -329,89 +326,86 @@ alert(error.message);    alert("Booking failed");
       </div>
     </div>
 
-
-            {/* CAROUSEL */}
-             {/* 🔥 UPPER STICKY NAVBAR (same height as lower bar) */}
+    {/* CAROUSEL */}
     <div className="sticky top-0 z-30 bg-orange-500 text-white px-6 py-3 flex justify-around shadow-md">
       <span className="font-semibold"><b>WE HAVE A VARIETY OF CARS AVAILABLE</b></span>
     </div>
-            <div className="mt-16 overflow-hidden px-6">
+
+    <div className="mt-10 md:mt-16 overflow-hidden px-4 md:px-6">
+      <div
+        className="flex items-center transition-transform duration-[1200ms] ease-in-out"
+        style={{
+          transform: `translateX(calc(-${index * 33.33}% + 33.33%))`,
+        }}
+      >
+        {loopCars.map((car, i) => {
+          const isActive = i === index;
+
+          return (
+            <div key={i} className="min-w-full md:min-w-[33.33%] flex justify-center px-4 md:px-6">
               <div
-                className="flex items-center transition-transform duration-[1200ms] ease-in-out"
-                style={{
-                  transform: `translateX(calc(-${index * 33.33}% + 33.33%))`,
-                }}
+                className={`w-full md:w-[320px] h-[480px] rounded-2xl p-5 flex flex-col justify-between
+                bg-gradient-to-b from-white-900 via-gray-800 to-black text-white shadow-xl
+                transition-all duration-700 ${
+                  isActive
+                    ? "scale-110 opacity-100 z-10"
+                    : "scale-90 opacity-60 blur-[2px]"
+                }`}
               >
-                {loopCars.map((car, i) => {
-                  const isActive = i === index;
+                <div className="flex justify-center mt-3">
+                  <span className="bg-gray-700 text-white px-4 py-1 rounded-full text-sm font-bold">
+                    {car.name}
+                  </span>
+                </div>
 
-                  return (
-                    <div key={i} className="min-w-[33.33%] flex justify-center px-6">
-                      <div
-                        className={`w-[320px] h-[480px] rounded-2xl p-5 flex flex-col justify-between
-                        bg-gradient-to-b from-white-900 via-gray-800 to-black text-white shadow-xl
-                        transition-all duration-700 ${
-                          isActive
-                            ? "scale-110 opacity-100 z-10"
-                            : "scale-90 opacity-60 blur-[2px]"
-                        }`}
-                      >
-                        <div className="flex justify-center mt-3">
-                          <span className="bg-gray-700 text-white px-4 py-1 rounded-full text-sm font-bold">
-                            {car.name}
-                          </span>
-                        </div>
+                <div className="flex justify-center items-center">
+                  <img src={car.image_url} className="h-36 object-contain" />
+                </div>
 
-                        <div className="flex justify-center items-center">
-                          <img src={car.image_url} className="h-36 object-contain" />
-                        </div>
+                <div className="text-center">
+                  <p className="text-gray-300 text-sm mb-1">
+                    {car.type || "Premium Vehicle"}
+                  </p>
 
-                        <div className="text-center">
-                          <p className="text-gray-300 text-sm mb-1">
-                            {car.type || "Premium Vehicle"}
-                          </p>
+                  <p className="text-xs text-gray-400 mb-2">
+                    {car.description}
+                  </p>
 
-                          {/* ✅ DESCRIPTION ADDED */}
-                          <p className="text-xs text-gray-400 mb-2">
-                            {car.description}
-                          </p>
+                  <div className="text-2xl font-bold">
+                    ₹{car.price} <span className="text-sm">/day</span>
+                  </div>
 
-                          <div className="text-2xl font-bold">
-                            ₹{car.price} <span className="text-sm">/day</span>
-                          </div>
-
-                          <button
-                            onClick={() => {
-                              setSelectedCar(car);
-                              setShowModal(true);
-                            }}
-                            className="mt-3 w-full bg-orange-500 py-2 rounded-full"
-                          >
-                            Book Now
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
+                  <button
+                    onClick={() => {
+                      setSelectedCar(car);
+                      setShowModal(true);
+                    }}
+                    className="mt-3 w-full bg-orange-500 py-2 rounded-full"
+                  >
+                    Book Now
+                  </button>
+                </div>
               </div>
-             
             </div>
-          </>
-        )}
+          );
+        })}
+      </div>
+    </div>
+  </>
+)}
 {bookingSuccess && (
-  <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center">
-    <div className="bg-white p-10 rounded-2xl text-center shadow-2xl max-w-md">
+  <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center px-4">
+    <div className="bg-white p-6 md:p-10 rounded-2xl text-center shadow-2xl max-w-md w-full">
       
-      <h2 className="text-3xl font-bold text-green-600 mb-4">
+      <h2 className="text-2xl md:text-3xl font-bold text-green-600 mb-4">
         Booking Confirmed 🎉
       </h2>
 
-      <p className="text-lg mb-2">
+      <p className="text-base md:text-lg mb-2">
         Your car has been successfully booked.
       </p>
 
-      <p className="text-xl font-bold text-orange-500 mb-4">
+      <p className="text-lg md:text-xl font-bold text-orange-500 mb-4 break-words">
         Tracking ID: {trackingId}
       </p>
 
@@ -420,16 +414,17 @@ alert(error.message);    alert("Booking failed");
           setBookingSuccess(false);
           setPage("dashboard");
         }}
-        className="bg-orange-500 text-white px-6 py-2 rounded-full"
+        className="bg-orange-500 text-white px-6 py-2 rounded-full w-full md:w-auto"
       >
         Go to Dashboard
       </button>
     </div>
   </div>
 )}
-        {/* AVAILABLE CARS */}
+
+{/* AVAILABLE CARS */}
 {page === "cars" && (
-  <div className="p-10 grid md:grid-cols-3 gap-6 bg-gray-100">
+  <div className="p-4 md:p-10 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 bg-gray-100">
     {(filteredCars.length ? filteredCars : cars).map((car) => (
       <div
         key={car.id}
@@ -456,7 +451,6 @@ alert(error.message);    alert("Booking failed");
             {car.type || "Premium Vehicle"}
           </p>
 
-          {/* DESCRIPTION */}
           <p className="text-xs text-gray-400 mb-2 hover:text-gray-700 transition">
             {car.description}
           </p>
@@ -482,63 +476,58 @@ alert(error.message);    alert("Booking failed");
 )}
 
 <div className="w-full h-6 bg-white"></div>
-        {/* 🔥 SEPARATION BLOCK */}
- {/* 🔥 UPPER STICKY NAVBAR (same height as lower bar)
-    <div className="sticky top-0 z-30 bg-orange-500 text-white px-6 py-3 flex justify-around shadow-md">
-      <span className="font-semibold"><b>TRACK BOOKING</b></span>
-    </div> */}
 
+{page === "about" && (
+  <div className="p-4 md:p-10 bg-gray-100">
 
-
-       {page === "about" && (
-  <div className="p-10 bg-gray-100">
-   {/* 🔥 UPPER STICKY NAVBAR (same height as lower bar) */}
     <div className="sticky top-0 z-30 bg-orange-500 text-white px-6 py-3 flex justify-around shadow-md">
       <button
-  onClick={() => setPage("cars")}
-  className="px-4 py-2 rounded-full bg-white text-orange-500 font-semibold hover:bg-gray-100 transition"
->
-  ABOUT US
-</button>
+        onClick={() => setPage("cars")}
+        className="px-4 py-2 rounded-full bg-white text-orange-500 font-semibold hover:bg-gray-100 transition"
+      >
+        ABOUT US
+      </button>
     </div>
 
-   {/* HERO */}
-{/* HERO */}
-<div className="mt-16 bg-gradient-to-br from-gray-900 to-white p-10 rounded-2xl shadow-xl text-center">
+    {/* HERO */}
+    <div className="mt-10 md:mt-16 bg-gradient-to-br from-gray-900 to-white p-6 md:p-10 rounded-2xl shadow-xl text-center">
 
-  <h1 className="text-4xl font-extrabold mb-6 text-white">About Car2Go</h1>
+      <h1 className="text-2xl md:text-4xl font-extrabold mb-6 text-white">
+        About Car2Go
+      </h1>
 
-  <div className="max-w-2xl mx-auto space-y-4 text-lg font-medium text-white">
+      <div className="max-w-2xl mx-auto space-y-4 text-base md:text-lg font-medium text-white">
 
-    <p>
-      Car2Go is your trusted car rental partner in Pune, offering affordable,
-      reliable, and premium vehicles for every journey.
-    </p>
+        <p>
+          Car2Go is your trusted car rental partner in Pune, offering affordable,
+          reliable, and premium vehicles for every journey.
+        </p>
 
-    <p>
-      Car2Go India is a self-drive car rental platform that provides customers
-      with access to a wide range of vehicles including hatchbacks,
-      sedans, and SUVs.
-    </p>
+        <p>
+          Car2Go India is a self-drive car rental platform that provides customers
+          with access to a wide range of vehicles including hatchbacks,
+          sedans, and SUVs.
+        </p>
 
-    <p>
-      The platform enables seamless booking, transparent pricing,
-      and flexible rental durations.
-    </p>
+        <p>
+          The platform enables seamless booking, transparent pricing,
+          and flexible rental durations.
+        </p>
 
-    <p>
-      It also allows car owners to list their vehicles and generate
-      passive income through a revenue-sharing model.
-    </p>
+        <p>
+          It also allows car owners to list their vehicles and generate
+          passive income through a revenue-sharing model.
+        </p>
 
-    <p className="font-bold">📞 Contact us: +91 8530899927</p>
+        <p className="font-bold">📞 Contact us: +91 8530899927</p>
 
-  </div>
+      </div>
+    </div>
 
-</div>
     {/* FEATURES */}
-    <div className="mt-12 grid md:grid-cols-3 gap-6">
-     <div className="mt-16 bg-gradient-to-br from-gray-900 to-white p-10 rounded-2xl shadow-xl">
+    <div className="mt-8 md:mt-12 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+      
+      <div className="bg-gradient-to-br from-gray-900 to-white p-6 md:p-10 rounded-2xl shadow-xl">
         <h2 className="font-bold text-lg mb-2">
           <span className="bg-orange-500 text-white px-4 py-1 rounded-full inline-block">
             🚗 Wide Range
@@ -548,7 +537,8 @@ alert(error.message);    alert("Booking failed");
           From hatchbacks to SUVs, choose the perfect car.
         </p>
       </div>
-<div className="mt-16 bg-gradient-to-br from-gray-900 to-white p-10 rounded-2xl shadow-xl">
+
+      <div className="bg-gradient-to-br from-gray-900 to-white p-6 md:p-10 rounded-2xl shadow-xl">
         <h2 className="font-bold text-lg mb-2">
           <span className="bg-orange-500 text-white px-4 py-1 rounded-full inline-block">
             💸 Affordable
@@ -559,30 +549,28 @@ alert(error.message);    alert("Booking failed");
         </p>
       </div>
 
-     <div className="mt-16 bg-gradient-to-br from-gray-900 to-white p-10 rounded-2xl shadow-xl">
+      <div className="bg-gradient-to-br from-gray-900 to-white p-6 md:p-10 rounded-2xl shadow-xl">
         <h2 className="font-bold text-lg mb-2">
           <span className="bg-orange-500 text-white px-4 py-1 rounded-full inline-block">
             ⚡ Instant Booking
           </span>
         </h2>
-        
         <p className="text-white-600 text-sm">
           Book your ride in seconds with ease.
         </p>
       </div>
+
     </div>
 
-    {/* 🔥 DARK GLASS SECTION */}
-    <div className="mt-16 bg-gradient-to-br from-gray-900 to-white p-10 rounded-2xl shadow-xl">
+    {/* DARK SECTION */}
+    <div className="mt-10 md:mt-16 bg-gradient-to-br from-gray-900 to-white p-6 md:p-10 rounded-2xl shadow-xl">
 
-      {/* HEADING */}
-      <h2 className="text-2xl font-bold mb-6 text-center">
+      <h2 className="text-xl md:text-2xl font-bold mb-6 text-center">
         <span className="bg-orange-500 text-white px-6 py-2 rounded-full inline-block shadow-lg">
           Why Choose Car2Go?
         </span>
       </h2>
 
-      {/* GLASS PILLS */}
       <ul className="space-y-4 max-w-2xl mx-auto text-sm">
         <li className="backdrop-blur-md bg-gray/10 text-white px-5 py-2 rounded-full border border-white/20 hover:bg-white/20 transition w-fit mx-auto">
           ✔ Well-maintained & sanitized vehicles
@@ -601,55 +589,43 @@ alert(error.message);    alert("Booking failed");
     </div>
 
     {/* CTA */}
-    <div className="mt-12 text-center">
+    <div className="mt-10 md:mt-12 text-center">
       <button
         onClick={() => setPage("cars")}
-   className="mt-16 bg-gradient-to-br from-gray-900 to-white p-10 rounded-2xl shadow-xl"
+        className="bg-gradient-to-br from-gray-900 to-white p-6 md:p-10 rounded-2xl shadow-xl"
       >
         Explore Cars
       </button>
     </div>
-     {/* 🔥 SEPARATION BLOCK */}
-<div className="w-full h-6 bg-white"></div>
 
-{/* 🔥 BOTTOM NAVBAR */}
-<div className="sticky bottom-0 z-40 bg-orange-500 text-white shadow-inner px-6 py-3 flex justify-around">
+    <div className="w-full h-6 bg-white"></div>
 
-  <button
-  onClick={() => setPage("cars")}
-  className="px-4 py-2 rounded-full bg-white text-orange-500 font-semibold hover:bg-gray-100 transition"
->
- HOME
-</button>
-
-  <button
-  onClick={() => setPage("cars")}
-  className="px-4 py-2 rounded-full bg-white text-orange-500 font-semibold hover:bg-gray-100 transition"
->
-  CARS
-</button>
-<button
-  onClick={() => setPage("cars")}
-  className="px-4 py-2 rounded-full bg-white text-orange-500 font-semibold hover:bg-gray-100 transition"
->
-  ABOUT US
-</button>
-
-</div>
+    {/* BOTTOM NAVBAR */}
+    <div className="sticky bottom-0 z-40 bg-orange-500 text-white shadow-inner px-4 md:px-6 py-3 flex justify-around">
+      <button onClick={() => setPage("cars")} className="px-4 py-2 rounded-full bg-white text-orange-500 font-semibold">
+        HOME
+      </button>
+      <button onClick={() => setPage("cars")} className="px-4 py-2 rounded-full bg-white text-orange-500 font-semibold">
+        CARS
+      </button>
+      <button onClick={() => setPage("cars")} className="px-4 py-2 rounded-full bg-white text-orange-500 font-semibold">
+        ABOUT US
+      </button>
+    </div>
 
   </div>
-  
 )}
+
       </div>
 
-      {/* ⭐ BOOKING MODAL */}
+     {/* ⭐ BOOKING MODAL */}
 {showModal && selectedCar && (
-  <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 overflow-y-auto pt-24 pb-10">
+  <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 overflow-y-auto px-4 pt-20 pb-10">
 
-    <div className="mx-auto bg-gradient-to-br from-gray-900 to-white p-8 rounded-2xl w-[90%] max-w-lg shadow-2xl border border-white/20">
+    <div className="mx-auto bg-gradient-to-br from-gray-900 to-white p-6 rounded-2xl w-full max-w-lg shadow-2xl border border-white/20">
 
       {/* TITLE */}
-      <h2 className="text-2xl font-bold mb-3 text-center text-white">
+      <h2 className="text-2xl font-bold mb-3 text-center text-white break-words">
         Booking — {selectedCar.name}
       </h2>
 
@@ -663,7 +639,7 @@ alert(error.message);    alert("Booking failed");
         placeholder="Full Name"
         value={customerName}
         onChange={(e) => setCustomerName(e.target.value)}
-        className="w-full p-3 rounded-lg mb-3 bg-white/20 border border-white/30 text-white"
+        className="w-full p-3 rounded-lg mb-3 bg-white/20 border border-white/30 text-white placeholder-white/70 outline-none"
       />
 
       <input
@@ -671,7 +647,7 @@ alert(error.message);    alert("Booking failed");
         placeholder="Mobile Number"
         value={customerMobile}
         onChange={(e) => setCustomerMobile(e.target.value)}
-        className="w-full p-3 rounded-lg mb-3 bg-white/20 border border-white/30 text-white"
+        className="w-full p-3 rounded-lg mb-3 bg-white/20 border border-white/30 text-white placeholder-white/70 outline-none"
       />
 
       <input
@@ -679,7 +655,7 @@ alert(error.message);    alert("Booking failed");
         placeholder="Address"
         value={customerAddress}
         onChange={(e) => setCustomerAddress(e.target.value)}
-        className="w-full p-3 rounded-lg mb-3 bg-white/20 border border-white/30 text-white"
+        className="w-full p-3 rounded-lg mb-3 bg-white/20 border border-white/30 text-white placeholder-white/70 outline-none"
       />
 
       <input
@@ -687,7 +663,7 @@ alert(error.message);    alert("Booking failed");
         placeholder="Aadhar Card Number"
         value={customerAadhar}
         onChange={(e) => setCustomerAadhar(e.target.value)}
-        className="w-full p-3 rounded-lg mb-3 bg-white/20 border border-white/30 text-white"
+        className="w-full p-3 rounded-lg mb-3 bg-white/20 border border-white/30 text-white placeholder-white/70 outline-none"
       />
 
       {/* BOOKING DETAILS */}
@@ -700,7 +676,7 @@ alert(error.message);    alert("Booking failed");
         type="date"
         value={pickupDate}
         onChange={(e) => setPickupDate(e.target.value)}
-        className="w-full p-3 rounded-lg mb-3 bg-white/20 border border-white/30 text-white"
+        className="w-full p-3 rounded-lg mb-3 bg-white/20 border border-white/30 text-white outline-none"
       />
 
       <label className="text-sm font-medium text-white">Pickup Time</label>
@@ -708,7 +684,7 @@ alert(error.message);    alert("Booking failed");
         type="time"
         value={pickupTime}
         onChange={(e) => setPickupTime(e.target.value)}
-        className="w-full p-3 rounded-lg mb-3 bg-white/20 border border-white/30 text-white"
+        className="w-full p-3 rounded-lg mb-3 bg-white/20 border border-white/30 text-white outline-none"
       />
 
       <label className="text-sm font-medium text-white">Return Date</label>
@@ -716,7 +692,7 @@ alert(error.message);    alert("Booking failed");
         type="date"
         value={returnDate}
         onChange={(e) => setReturnDate(e.target.value)}
-        className="w-full p-3 rounded-lg mb-3 bg-white/20 border border-white/30 text-white"
+        className="w-full p-3 rounded-lg mb-3 bg-white/20 border border-white/30 text-white outline-none"
       />
 
       <label className="text-sm font-medium text-white">Return Time</label>
@@ -724,32 +700,34 @@ alert(error.message);    alert("Booking failed");
         type="time"
         value={returnTime}
         onChange={(e) => setReturnTime(e.target.value)}
-        className="w-full p-3 rounded-lg mb-3 bg-white/20 border border-white/30 text-white"
+        className="w-full p-3 rounded-lg mb-3 bg-white/20 border border-white/30 text-white outline-none"
       />
 
       <label className="text-sm font-medium text-white">Total Amount (₹)</label>
-      <div className="w-full p-3 rounded-lg bg-white/20 border border-white/30 text-white font-semibold mb-3">
+      <div className="w-full p-3 rounded-lg bg-white/20 border border-white/30 text-white font-semibold mb-3 text-center">
         ₹{totalAmount}
       </div>
 
       {/* BUTTON */}
-<button
-  onClick={handleBooking}
-  className="w-full bg-orange-500 py-3 mt-3 rounded-full font-bold hover:bg-orange-600 transition"
->        Confirm Booking
+      <button
+        onClick={handleBooking}
+        className="w-full bg-orange-500 py-3 mt-3 rounded-full font-bold hover:bg-orange-600 transition"
+      >
+        Confirm Booking
       </button>
 
       {/* CLOSE */}
       <button
         onClick={() => setShowModal(false)}
-        className="mt-4 w-full text-center text-black-300 font-semibold"
+        className="mt-4 w-full text-center text-white/80 font-semibold hover:text-white transition"
       >
         CANCEL
       </button>
+
     </div>
   </div>
 )}
-      
+
     </div>
   );
 }
