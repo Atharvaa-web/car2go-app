@@ -56,12 +56,9 @@ export default function Admin() {
       .order("id", { ascending: false });
 
     if (error) {
-      console.log("Booking error:", error);
+      console.log(error);
     } else {
-      setBookings([]);
-      setTimeout(() => {
-        setBookings(data || []);
-      }, 100);
+      setBookings(data || []);
     }
 
     setLoadingBookings(false);
@@ -83,6 +80,7 @@ export default function Admin() {
     ]);
 
     alert("Car added ✅");
+
     setNewCar({
       car_name: "",
       price_per_day: "",
@@ -99,11 +97,11 @@ export default function Admin() {
   }
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-gray-100">
+    <div className="flex flex-col md:flex-row min-h-screen bg-gray-100 text-sm md:text-base">
 
       {/* SIDEBAR / TOPBAR */}
-      <div className="w-full md:w-64 bg-gradient-to-r md:bg-gradient-to-b from-orange-500 to-orange-700 text-white p-4 md:p-6 flex md:flex-col gap-3 overflow-x-auto">
-        <h1 className="text-lg md:text-2xl font-bold whitespace-nowrap">
+      <div className="w-full md:w-64 bg-gradient-to-r md:bg-gradient-to-b from-orange-500 to-orange-700 text-white p-2 md:p-6 flex md:flex-col gap-2 overflow-x-auto">
+        <h1 className="text-base md:text-2xl font-bold whitespace-nowrap">
           Admin Panel
         </h1>
 
@@ -112,7 +110,7 @@ export default function Admin() {
             <button
               key={item}
               onClick={() => setPage(item)}
-              className={`px-3 md:px-4 py-2 rounded-full font-semibold text-sm md:text-base whitespace-nowrap transition
+              className={`px-2 py-1 md:px-4 md:py-2 rounded-full font-semibold text-xs md:text-base whitespace-nowrap transition
               ${
                 page === item
                   ? "bg-white text-orange-600"
@@ -130,29 +128,29 @@ export default function Admin() {
       </div>
 
       {/* MAIN */}
-      <div className="flex-1 p-4 md:p-8">
+      <div className="flex-1 p-2 sm:p-3 md:p-8">
 
         {/* DASHBOARD */}
         {page === "dashboard" && (
           <>
-            <h1 className="text-xl md:text-3xl font-bold mb-4 md:mb-6 text-orange-600">
+            <h1 className="text-lg md:text-3xl font-bold mb-3 md:mb-6 text-orange-600">
               🚗 Admin Dashboard
             </h1>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-              <div className="bg-white text-black p-4 md:p-6 rounded-xl shadow text-center border-t-4 border-orange-500">
-                <h2 className="text-lg md:text-xl font-bold">Total Cars</h2>
-                <p className="text-2xl md:text-3xl mt-2">{cars.length}</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
+              <div className="bg-white p-3 md:p-6 rounded-xl shadow text-center">
+                <h2 className="text-sm md:text-xl font-bold">Total Cars</h2>
+                <p className="text-xl md:text-3xl mt-1">{cars.length}</p>
               </div>
 
-              <div className="bg-white text-black p-4 md:p-6 rounded-xl shadow text-center border-t-4 border-orange-500">
-                <h2 className="text-lg md:text-xl font-bold">Total Bookings</h2>
-                <p className="text-2xl md:text-3xl mt-2">{bookings.length}</p>
+              <div className="bg-white p-3 md:p-6 rounded-xl shadow text-center">
+                <h2 className="text-sm md:text-xl font-bold">Total Bookings</h2>
+                <p className="text-xl md:text-3xl mt-1">{bookings.length}</p>
               </div>
 
-              <div className="bg-white text-black p-4 md:p-6 rounded-xl shadow text-center border-t-4 border-orange-500">
-                <h2 className="text-lg md:text-xl font-bold">Revenue</h2>
-                <p className="text-2xl md:text-3xl mt-2">
+              <div className="bg-white p-3 md:p-6 rounded-xl shadow text-center">
+                <h2 className="text-sm md:text-xl font-bold">Revenue</h2>
+                <p className="text-xl md:text-3xl mt-1">
                   ₹{bookings.reduce((sum, b) => sum + (b.total_amount || 0), 0)}
                 </p>
               </div>
@@ -163,12 +161,12 @@ export default function Admin() {
         {/* CARS */}
         {page === "cars" && (
           <>
-            <h2 className="text-xl md:text-2xl font-bold mb-4 text-orange-600">
+            <h2 className="text-lg md:text-2xl font-bold mb-3 md:mb-4 text-orange-600">
               🚘 Cars
             </h2>
 
-            <div className="bg-black p-4 md:p-6 rounded-xl shadow w-full md:max-w-md mb-8">
-              <h2 className="text-lg md:text-xl font-bold mb-4">
+            <div className="bg-black p-3 md:p-6 rounded-xl shadow w-full md:max-w-md mb-6">
+              <h2 className="text-sm md:text-xl font-bold mb-3 text-white">
                 Add New Car
               </h2>
 
@@ -178,7 +176,7 @@ export default function Admin() {
                 onChange={(e) =>
                   setNewCar({ ...newCar, car_name: e.target.value })
                 }
-                className="border w-full p-2 mb-3 bg-white text-black"
+                className="border w-full p-2 mb-2 bg-white text-black text-sm"
               />
 
               <input
@@ -187,7 +185,7 @@ export default function Admin() {
                 onChange={(e) =>
                   setNewCar({ ...newCar, price_per_day: e.target.value })
                 }
-                className="border w-full p-2 mb-3 bg-white text-black"
+                className="border w-full p-2 mb-2 bg-white text-black text-sm"
               />
 
               <input
@@ -196,7 +194,7 @@ export default function Admin() {
                 onChange={(e) =>
                   setNewCar({ ...newCar, seats: e.target.value })
                 }
-                className="border w-full p-2 mb-3 bg-white text-black"
+                className="border w-full p-2 mb-2 bg-white text-black text-sm"
               />
 
               <input
@@ -205,35 +203,33 @@ export default function Admin() {
                 onChange={(e) =>
                   setNewCar({ ...newCar, image_url: e.target.value })
                 }
-                className="border w-full p-2 mb-3 bg-white text-black"
+                className="border w-full p-2 mb-2 bg-white text-black text-sm"
               />
 
               <button
                 onClick={addCar}
-                className="bg-orange-500 hover:bg-orange-600 text-white w-full py-2 rounded font-semibold"
+                className="bg-orange-500 hover:bg-orange-600 text-white w-full py-2 rounded text-sm"
               >
                 Add Car
               </button>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
               {cars.map((car) => (
-                <div
-                  key={car.id}
-                  className="bg-white text-black p-4 rounded-xl shadow"
-                >
+                <div key={car.id} className="bg-white p-3 md:p-4 rounded-xl shadow">
                   <img
                     src={car.image_url || "https://via.placeholder.com/300"}
-                    className="w-full h-40 object-cover rounded mb-3"
+                    alt={car.car_name}
+                    className="w-full h-32 md:h-40 object-cover rounded mb-2"
                   />
 
-                  <h3 className="font-bold">{car.car_name}</h3>
-                  <p>₹{car.price_per_day}/day</p>
-                  <p>{car.seats} Seater</p>
+                  <h3 className="font-bold text-sm md:text-base">{car.car_name}</h3>
+                  <p className="text-sm">₹{car.price_per_day}/day</p>
+                  <p className="text-sm">{car.seats} Seater</p>
 
                   <button
                     onClick={() => deleteCar(car.id)}
-                    className="mt-3 w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded"
+                    className="mt-2 w-full bg-red-500 hover:bg-red-600 text-white py-1.5 rounded text-sm"
                   >
                     Delete
                   </button>
@@ -246,113 +242,68 @@ export default function Admin() {
         {/* BOOKINGS */}
         {page === "bookings" && (
           <>
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
-              <h2 className="text-xl md:text-2xl font-bold text-orange-600">
+            <div className="flex flex-col sm:flex-row justify-between mb-3 gap-2">
+              <h2 className="text-lg md:text-2xl font-bold text-orange-600">
                 📋 Bookings
               </h2>
 
               <button
                 onClick={getBookings}
-                className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded"
+                className="bg-orange-500 hover:bg-orange-600 text-white px-3 py-1 rounded text-sm"
               >
                 Refresh
               </button>
             </div>
 
-            <div className="bg-black rounded-xl shadow overflow-x-auto text-white">
-              <table className="min-w-[800px] w-full text-left text-sm md:text-base">
-                <thead className="bg-orange-500 text-white">
+            <div className="bg-black rounded-xl shadow overflow-x-auto text-white text-xs md:text-sm">
+              <table className="w-full text-left">
+                <thead className="bg-orange-500">
                   <tr>
-                    <th className="p-3">ID</th>
-                    <th className="p-3">Customer</th>
-                    <th className="p-3">Mobile</th>
-                    <th className="p-3">Car</th>
-                    <th className="p-3">Pickup</th>
-                    <th className="p-3">Return</th>
-                    <th className="p-3">Amount</th>
-                    <th className="p-3">Tracking</th>
-                    <th className="p-3">Actions</th>
+                    <th className="p-2">ID</th>
+                    <th className="p-2">Customer</th>
+                    <th className="p-2">Mobile</th>
+                    <th className="p-2">Car</th>
+                    <th className="p-2">Pickup</th>
+                    <th className="p-2">Return</th>
+                    <th className="p-2">Amount</th>
+                    <th className="p-2">Tracking</th>
+                    <th className="p-2">Actions</th>
                   </tr>
                 </thead>
 
                 <tbody>
                   {loadingBookings ? (
                     <tr>
-                      <td colSpan={9} className="p-4 text-center">
+                      <td colSpan={9} className="p-2 text-center">
                         Loading...
                       </td>
                     </tr>
                   ) : bookings.length === 0 ? (
                     <tr>
-                      <td colSpan={9} className="p-4 text-center">
+                      <td colSpan={9} className="p-2 text-center">
                         No bookings found
                       </td>
                     </tr>
                   ) : (
                     bookings.map((b, index) => (
                       <tr key={b.id} className="border-t border-gray-700">
-                        <td className="p-3">{index + 1}</td>
-                        <td className="p-3">{b.customer_name}</td>
-                        <td className="p-3">{b.mobile}</td>
-                        <td className="p-3">{b.car_name}</td>
-                        <td className="p-3">{b.pickup_date}</td>
-                        <td className="p-3">{b.return_date}</td>
-                        <td className="p-3">₹{b.total_amount}</td>
+                        <td className="p-2">{index + 1}</td>
+                        <td className="p-2">{b.customer_name}</td>
+                        <td className="p-2">{b.mobile}</td>
+                        <td className="p-2">{b.car_name}</td>
+                        <td className="p-2">{b.pickup_date}</td>
+                        <td className="p-2">{b.return_date}</td>
+                        <td className="p-2">₹{b.total_amount}</td>
 
-                        <td className="p-3 text-green-400 font-semibold">
-                          {b.tracking_id ? b.tracking_id : "—"}
+                        <td className="p-2 text-green-400">
+                          {b.tracking_id || "—"}
                         </td>
 
-                        <td className="p-3 flex gap-2">
-                          <button
-                            onClick={async () => {
-                              const newName = prompt(
-                                "Enter new name",
-                                b.customer_name || ""
-                              );
-                              if (!newName) return;
-
-                              const { data, error } = await supabase
-                                .from("bookings")
-                                .update({
-                                  customer_name: newName,
-                                  user_name: newName,
-                                })
-                                .eq("id", b.id)
-                                .select();
-
-                              if (error) {
-                                alert("Update failed");
-                              } else {
-                                alert("Updated ✅");
-                                setBookings((prev) =>
-                                  prev.map((item) =>
-                                    item.id === b.id
-                                      ? { ...item, ...data[0] }
-                                      : item
-                                  )
-                                );
-                              }
-                            }}
-                            className="bg-blue-500 hover:bg-blue-600 px-3 py-1 rounded text-white text-sm"
-                          >
+                        <td className="p-2 flex gap-2">
+                          <button className="bg-blue-500 px-2 py-1 rounded text-xs">
                             Edit
                           </button>
-
-                          <button
-                            onClick={async () => {
-                              if (!confirm("Delete booking?")) return;
-
-                              await supabase
-                                .from("bookings")
-                                .delete()
-                                .eq("id", b.id);
-
-                              alert("Deleted ✅");
-                              getBookings();
-                            }}
-                            className="bg-red-500 hover:bg-red-600 px-3 py-1 rounded text-white text-sm"
-                          >
+                          <button className="bg-red-500 px-2 py-1 rounded text-xs">
                             Delete
                           </button>
                         </td>
